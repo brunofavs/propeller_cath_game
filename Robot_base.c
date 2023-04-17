@@ -18,6 +18,7 @@ void rotateLeft(){
   printf("Rotating left");
 }
 
+
 void rotateRigth(){
   servo_speed(RIGHT_WHEEL,-50);
   servo_speed(LEFT_WHEEL,50);
