@@ -189,8 +189,12 @@ int main()                                    // Main function
     // printf("\nDelta distance right is %d\n",delta_dist_right);
     // printf("Delta distance left is %d\n",delta_dist_left);
     
-    printf("\nActual distance left is %d\n",ping_cm(LEFT_SENSOR_PIN));
-    printf("Actual distance right is %d\n",ping_cm(RIGHT_SENSOR_PIN));
+    int tempL = ping_cm(LEFT_SENSOR_PIN);
+    int tempR = ping_cm(RIGHT_SENSOR_PIN);  
+
+
+    printf("\nActual distance left is %d\n",tempL);
+    printf("Actual distance right is %d\n",tempR);
 
     pause(1000);
 
@@ -199,3 +203,4 @@ int main()                                    // Main function
 
   }  
 }
+//For some godass reason having cog run activated messes with sensor reading wtf 
