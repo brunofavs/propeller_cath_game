@@ -248,9 +248,43 @@ measurement error.
 \end{figure}
 
 \subsection{Measuring distances}
-talk about dual core shits
+
+In order to assure the robot could always read the latest reading from the
+sensor when needing to evaluate distances, and to take advantage of the
+parallax's multicore chip, the sensor data is being stored on a global variable
+that is constantly being updates parallel to the code. The code for acquiring
+data is running on a separate core. 
+
+\begin{lstlisting}[style = C_style]
+
+cog_run(computeDistances,256);
+
+\end{lstlisting}
+
+The following function is used to measure the differential distance measures:
+\begin{lstlisting}[style = C_style]
+
+void computeDistances(){
+  while(1){
+    int first_left = ping_cm(LEFT_SENSOR_PIN); // Measure left sensor
+    int first_right = ping_cm(RIGHT_SENSOR_PIN); // Measure right sensor
+
+    pause(10);   // Pause 100ms                     
+    
+    delta_dist_left = ping_cm(LEFT_SENSOR_PIN) - first_left;
+    delta_dist_right = ping_cm(RIGHT_SENSOR_PIN) - first_right;
+}
+ 
+\end{lstlisting}
+
+
+\subsection{Electric Connections}
 
 \section{Runner Robot}
+
+The runner robot, due to lack of sensors, will be running a more primitive
+algorithm, sort of permanent blind runner. An initial approach would be
+just making the runner go in circles.
 
 
 
