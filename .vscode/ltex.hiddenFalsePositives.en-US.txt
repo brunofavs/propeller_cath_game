@@ -1,0 +1,2 @@
+{"rule":"ENGLISH_WORD_REPEAT_RULE","sentence":"^\\QPlatformIO PlatformIO's IDE is a VScode extension which transforms VScode into a IDE capable of fully programming a wide range of microcontrollers, from code writting to EEPROM flashing.\\E$"}
+{"rule":"MORFOLOGIK_RULE_EN_US","sentence":"^\\QFunction targetAssessing().\\E$"}
