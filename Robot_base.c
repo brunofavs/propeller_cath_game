@@ -74,7 +74,7 @@ void computeDistances(){
     int first_left = ping_cm(LEFT_SENSOR_PIN); // Measure left sensor
     int first_right = ping_cm(RIGHT_SENSOR_PIN); // Measure right sensor
 
-    pause(10);   // Pause 100ms                     
+    pause(10);   // Pause 10ms                     
     
 
     delta_dist_left = ping_cm(LEFT_SENSOR_PIN) - first_left;
@@ -84,8 +84,8 @@ void computeDistances(){
     // printf("\n\nActual distance left is %d\n",first_left);
     // printf("Actual distance right is %d\n",first_right);
 
-    // printf("\nDelta distance right is %d\n",delta_dist_right);
-    // printf("Delta distance left is %d\n",delta_dist_left);
+    printf("\nDelta distance right is %d\n",delta_dist_right);
+    printf("Delta distance left is %d\n",delta_dist_left);
   }
 }
 
@@ -189,14 +189,8 @@ int main()                                    // Main function
     // printf("\nDelta distance right is %d\n",delta_dist_right);
     // printf("Delta distance left is %d\n",delta_dist_left);
     
-    int tempL = ping_cm(LEFT_SENSOR_PIN);
-    int tempR = ping_cm(RIGHT_SENSOR_PIN);  
 
-
-    printf("\nActual distance left is %d\n",tempL);
-    printf("Actual distance right is %d\n",tempR);
-
-    pause(1000);
+    pause(3000);
 
 
 
