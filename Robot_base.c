@@ -19,11 +19,11 @@
 int delta_dist_left = 0;
 int delta_dist_right = 0;
 
-int turning_speed = 50;
-int straigth_speed = 100;
+int turning_speed = 40;
+int straigth_speed = 50;
 
 // This controls how much the delta_distance has to be for the robot to take action
-int min_assess_thresh = 50;
+int min_assess_thresh = 30;
 // -----------------------------------------
 //            Function definitions
 // -----------------------------------------
@@ -97,10 +97,35 @@ int targetAssessing(){
   2 - Go right
   */  
 
+  delta_dist_left = 0;
+  delta_dist_right = 0;
+
   //! First the function should assure the car is stopped before reading the distance measures
   stopMoving();
 
-  pause(100); // To assure correct reading
+  pause(10); // To assure correct reading
+
+    
+    while(abs(delta_dist_left)<min_assess_thresh && abs(delta_dist_right)<min_assess_thresh){
+
+    int first_left = ping_cm(LEFT_SENSOR_PIN); // Measure left sensor
+    int first_right = ping_cm(RIGHT_SENSOR_PIN); // Measure right sensor
+
+    pause(10);   // Pause 10ms                     
+    
+
+    delta_dist_left = ping_cm(LEFT_SENSOR_PIN) - first_left;
+    delta_dist_right = ping_cm(RIGHT_SENSOR_PIN) - first_right;
+    
+    //? For some reason measuring at runtime doesn't work xd
+    // printf("\n\nActual distance left is %d\n",first_left);
+    // printf("Actual distance right is %d\n",first_right);
+
+    printf("\nDelta distance right is %d\n",delta_dist_right);
+    printf("Delta distance left is %d\n",delta_dist_left);
+
+    }
+
 
   //! Target going away or torwards the robot(5)
   if(abs(delta_dist_left) > min_assess_thresh && abs(delta_dist_right) > min_assess_thresh){
@@ -123,18 +148,18 @@ int targetAssessing(){
   }
 
   //! Target leaving from being detected on the left sensor to out of range("3")
-  else if(delta_dist_left > min_assess_thresh && abs(delta_dist_right)<min_assess_thresh)
-  {
-    printf("Case 3, Left\n");
-    return 1; //! Move left
-  }
+  // else if(delta_dist_left > min_assess_thresh && abs(delta_dist_right)<min_assess_thresh)
+  // {
+  //   printf("Case 3, Left\n");
+  //   return 1; //! Move left
+  // }
 
-  //! Target leaving from being detected on the right sensor to out of range("4")
-  else if(delta_dist_right > min_assess_thresh && abs(delta_dist_left)<min_assess_thresh)
-  {
-    printf("Case 4, Right\n");
-    return 2; //! Move right
-  }
+  // //! Target leaving from being detected on the right sensor to out of range("4")
+  // else if(delta_dist_right > min_assess_thresh && abs(delta_dist_left)<min_assess_thresh)
+  // {
+  //   printf("Case 4, Right\n");
+  //   return 2; //! Move right
+  // }
   else{
     return -1; //! Nothing
   }
@@ -149,7 +174,8 @@ void chaseTarget(int direction){
   2 - Go right
   */
 
-  int rotating_time = 1000;
+  int rotating_time = 900;
+  int straight_time = 200;
 
   if(direction == 0){
     moveForward();
@@ -166,6 +192,9 @@ void chaseTarget(int direction){
     pause(rotating_time);
     moveForward();
   }
+  
+  pause(straigth_speed);
+
 }
 
 
@@ -176,21 +205,20 @@ void chaseTarget(int direction){
 int main()                                    // Main function
 {
   propellerConfig();
-
-  cog_run(computeDistances,256);
+  // cog_run(computeDistances,256);
 
   while(1)
   {
 
     int direction = targetAssessing();
 
+    printf("Output of target assessing is %d\n",direction);
     chaseTarget(direction);
 
     // printf("\nDelta distance right is %d\n",delta_dist_right);
     // printf("Delta distance left is %d\n",delta_dist_left);
-    
+   pause(1000); 
 
-    pause(3000);
 
 
 

@@ -42,7 +42,18 @@ urlcolor    = red,
     
     \begin{abstract}
     
-
+This paper describes the development of two small robots from \textit{Parallax}, the \textit{Activity
+Bots} - a seeker and a runner
+- that use ultrasonic sensors to play the \textit{Catch game}. The seeker robot was
+programmed to detect the runner robot and chase it, while the runner robot was
+programmed to evade the seeker robot. The paper discusses the design and
+construction of the robots and the algorithms used to control their movements.
+The results of experiments conducted to test the robots' performance in the game
+are presented and analyzed. The experiments show that the seeker robot was able
+to detect and pursue the runner robot successfully.
+This paper also goes briefly on how to incorporate the workflow of parallax's
+robots programming in the engineer's favorite VScode.
+ 
 
     \end{abstract}
     
@@ -53,13 +64,17 @@ urlcolor    = red,
 
 \section{Introduction}
 
-This project is based on 2 robots from \textit{Parallax} the \textit{Activity
-Bots}, and the goal was to create a recreation of the kids game "The Catch".
-
-There's one robot with a seeker algorithm and another one with a runner
-algorithm. The seeker uses a pair of ultrasonic sensors to figure which
-direction an incoming target is coming from. The runner robot is programmed to
-run around in a pseudo-random way in the playing field in an open loop system.
+    Targeting and following algorithms are the base for many
+    applications in robotics field. While RGBD cameras or 2D/3D LiDARs are often
+    the preferred choice for most applications, ultrasonic sensors, even though
+    simple and quite less powerful, are sometimes a good alternative due to
+    their much more affordable price. The approach used in this research has
+    some reassemblance with the working principles of stereo cameras. Using 1
+    ultrasonic sensor proved insufficient to predict the target's direction.
+    Switching to 2 sensors and measuring deltas instead of absolute values
+    allowed the seeker to perceive the direction the target was coming from.
+    This working principle will be further expanded on in the seeker's robot
+    chapter of this paper.
 
 \begin{figure}[h]
     \centering
@@ -203,16 +218,101 @@ measurement error.
 
 \subsection{Measuring distances}
 
-In order to assure the robot could always read the latest reading from the
+Initially, in order to assure the robot could always read the latest reading from the
 sensor when needing to evaluate distances, and to take advantage of the
-parallax's multicore chip, the sensor data is being stored on a global variable
-that is constantly being updates parallel to the code. The code for acquiring
-data is running on a separate core.
+parallax's multicore chip, the sensor data was being stored on a global variable
+that was constantly being updates parallel to the code. The code for acquiring
+data was running on a separate core. 
+However, due to timing reasons, this proved to be more harmful to the overall
+performance of the robot. In the end, whenever the robot isn't actively pursuing
+the target, he is in a semi-idle state doing nothing other than to measure
+distances to try to identify a potential target.
+
+\subsection{Issues with the current implementation}
+\begin{itemize}
+      \item 
+      As of right now, the seeker isn't identifying how close the target is. As of
+      right now, the robot upon identifying the target's direction, its servos get an
+      input for a set amount of time at a set power. A runner coming into frame
+      further away should result in a smaller turn time while another closer away
+      should result in a sharper turn.
+      Finding a function that correlates the distance to the correct turn amount
+      is not an easy task tho, a trial and error approach could be used, but
+      such approach is reckoned to be too volatile and sensitive to environment changes.
+
+      \item Using ultrasonic sensors instead of cameras basically limits the
+      robot perception field into a line instead of spacial. This is means if for
+      some reason the runner gets completely out of the runner field of view,
+      the seeker becomes clueless again until the runner comes back into frame
+      again.
+      One approach to this problem could be to have the seeker pan around itself
+      whenever he got more than a set amount of repeated null differential
+      distances readings.
+
+      \item The ultrasonic sensors used are not very accurate and from time to
+      time yield outrageous readings, the robot if left facing a plain wall
+      still for a big enough period of time, its almost certain that he will
+      spontaneously turn because of an inaccurate reading. The sensors were
+      replaced and switched and the problem remained.
+\end{itemize}
+
+
+
+\section{Runner Robot}
+
+This robot does not possess any intelligence, it's just working as dummy robot
+that goes around in circles to provide the seeker something to follow. The only
+possible mounting position that would somewhat suit this robot is facing
+backwards, as there is never a scenario where the runner wants to be facing the
+seeker, but even then the runner ideally shouldn't be directly in front of the 
+seeker, since it would be in its perception field. 
+
+\section{Experiments}
+
+The following section goes over how the algorithm performed when faced with a
+few tests. It was tested the reaction time and the accuracy of the assessing,
+meaning if the seeker determined the right runner's direction.\footnote[1]{There
+are demo videos in the Github Repository}
+
+
+\subsection{Reaction time}
+
+It's important to note the following : the reaction time is mainly controlled by
+the delay between differential measures, \textit{$ \Delta T$}. In theory with a really low $ \Delta T$, the
+response time would be really great. In practice, this proved to have a lot more
+drawbacks:
+\begin{itemize}
+      \item The runner robot is not 100\% opaque, meaning its hollowness makes
+      the robot's behavior with a low  $ \Delta T$ unpredictable.
+
+      \item A low $ \Delta T$ also makes the robot's behavior very jittery and nervous.
+      
+\end{itemize}
+
+Nevertheless, with a delay of \textit{50ms}, here are some measurements of the
+response time with a slow moving object.
+
+
+\Large{
+INSERT RESULTS HERE}
+
+
+
  
+\subsection{Accuracy of target assessing}
+
+To test the seeker's accuracy, a series of objects approached the seeker from
+different angles and speeds and here are some results:
+
+
+\Large{
+INSERT RESULTS HERE}
+
+
 \section{Conclusions}
 
 
-\bibliographystyle{ACM-Reference-Format}
-\bibliography{references}
+% \bibliographystyle{ACM-Reference-Format}
+% \bibliography{references}
 
 \end{document}
