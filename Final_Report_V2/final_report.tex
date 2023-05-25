@@ -12,6 +12,7 @@
 \usepackage[linesnumbered, boxed, resetcount]{algorithm2e}
 \usepackage{hyperref}
 
+\usepackage{booktabs}
 \usepackage{listings}
 \usepackage{xcolor}
 
@@ -27,9 +28,10 @@ urlcolor    = red,
 
 \begin{document}
 
-\title{Activity Bot's Catch Game}
+\title{Activity Bot's Catch Game\\
+Ultrasonic Sensor Fusion for Object Tracking}
 
-\author{Bruno Silva \\ \href{https://github.com/brunofavs/propeller_cath_game}{Github Repository} }
+\author{Bruno Silva  }
 \email{bruno.silva1@student.um.si}
 \affiliation{%
     \institution{Faculty of Electrical \\Engineering and Computer Science,\\
@@ -43,7 +45,7 @@ urlcolor    = red,
     \begin{abstract}
     
 This paper describes the development of two small robots from \textit{Parallax}, the \textit{Activity
-Bots} - a seeker and a runner
+Bots} - a seeker (Figure \ref{fig:Seeker}) and a runner (Figure \ref{fig:Runner})
 - that use ultrasonic sensors to play the \textit{Catch game}. The seeker robot was
 programmed to detect the runner robot and chase it, while the runner robot was
 programmed to evade the seeker robot. The paper discusses the design and
@@ -52,7 +54,7 @@ The results of experiments conducted to test the robots' performance in the game
 are presented and analyzed. The experiments show that the seeker robot was able
 to detect and pursue the runner robot successfully.
 This paper also goes briefly on how to incorporate the workflow of parallax's
-robots programming in the engineer's favorite VScode.
+robots programming in the popular text editor VScode.
  
 
     \end{abstract}
@@ -64,15 +66,19 @@ robots programming in the engineer's favorite VScode.
 
 \section{Introduction}
 
-    Targeting and following algorithms are the base for many
-    applications in robotics field. While RGBD cameras or 2D/3D LiDARs are often
-    the preferred choice for most applications, ultrasonic sensors, even though
+    Tracking and detection algorithms are the base for many
+    applications in robotics field. There are many examples of other studies
+    backing this up, such as the use of Yolo's deep learning algorithms for
+    object detection \cite{r1}, or the use of tracking algorithms for robot
+    control \cite{control_robot}. While RGBD cameras or 2D/3D LiDARs are often
+    the preferred choice for most applications\cite{r2}, ultrasonic sensors, even though
     simple and quite less powerful, are sometimes a good alternative due to
-    their much more affordable price. The approach used in this research has
-    some reassemblance with the working principles of stereo cameras. Using 1
+    their much more affordable price\cite{Zhmud_2018}. The approach used in this research has
+    some reassemblance with the working principles of stereo cameras\cite{panich2010comparison}. Using 1
     ultrasonic sensor proved insufficient to predict the target's direction.
     Switching to 2 sensors and measuring deltas instead of absolute values
     allowed the seeker to perceive the direction the target was coming from.
+    Some studies show the credibility of fusing ultrasonic sensors \cite{ultrasonic_fusion}.
     This working principle will be further expanded on in the seeker's robot
     chapter of this paper.
 
@@ -84,7 +90,7 @@ robots programming in the engineer's favorite VScode.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[scale=0.1]{resources/Seeker_robot/4.jpeg}
+    \includegraphics[scale=0.1]{resources/Runner_robot.jpeg}
     \caption{\label{fig:Runner}Runner Robot. PLACEHOLDER IMG}
 \end{figure}
 
@@ -99,12 +105,10 @@ robots programming in the engineer's favorite VScode.
       \subsection{SimpleIDE}
 
       SimpleIDE is Parallax's official developing platform. As the name
-      suggests, it's a rather simple and feature lacking IDE, meant for absolute
-      beginners. Basic features like autocompletion, keyword highlight, or even
-      error squiggles are not present. This combined with the lack of
-      customization makes a more experienced user rather frustrated when trying
-      to develop on this platform. 
-
+      suggests, it's a rather feature lacking IDE as shown in \ref{fig:simple_ide}. Basic features like autocompletion, keyword highlight, or even
+      error squiggles are not present. Lack of customizability is what sets it
+      behind, not being simple. Other editors like Vim are also pretty simple by
+      default and are very popular due to their unmatched customizability ceiling. 
       \begin{figure}[h]
             \centering
             \includegraphics[scale=0.1]{resources/simple_ide.png}
@@ -115,7 +119,7 @@ robots programming in the engineer's favorite VScode.
       \subsection{VScode Integration}
 
       Fortunately, it is possible, with some workarounds, to migrate the grand
-      majority of the workflow into a more advanced environment like VScode.
+      majority of the workflow into a more popular environment like VScode.
       
       \begin{enumerate}
             \item PlatformIO
@@ -142,12 +146,11 @@ robots programming in the engineer's favorite VScode.
                         
                         This was the approach used. To replicate the following
                         folders have to be copied to the project folder:
-                        \begin{itemize}
-                              \item \begin{lstlisting}[language=bash]
-$ /home/${USER}/Documents/SimpleIDE/Learn
+                              \begin{lstlisting}[language=bash]
+$ /home/${USER}/Documents/SimpleIDE/
+Learn
 $ /opt/parallax
                                     \end{lstlisting}
-                              \end{itemize}
                               It's important to note that this applies only for Ubuntu
                                     based systems and that both these folders should be
                                     added to the repository's \textit{.gitignore} as they
@@ -158,10 +161,7 @@ $ /opt/parallax
 
 \section{Seeker Robot}
 
-
-\subsection{Algorithm Explanation}
-
-The core of the seeker's algorithm is based on 2 functions:
+The core of the seeker's algorithm is these 2 steps:
 \begin{enumerate}
       \item Assessing targets in range of ultrasonic sensors;
       
@@ -169,14 +169,14 @@ The core of the seeker's algorithm is based on 2 functions:
       a predefined $\Delta t\space[s]$, calculating the $\Delta d\space[cm]$ from the right and
       left sensor and figure out which direction the target is coming from and
       outputting accordingly.
-      \item Giving moving order to the servos to chase the target. This function
+      \item Giving moving order to the servos to chase the target. In this step the
       purpose is to, given the direction the target crossed from, tune how much
       the robot should rotate and go forward. This ideally would be dynamically
       controlled, but since the robot cannot know how fast the target crossed,
       it has to be manually tuned for a given target velocity.
 \end{enumerate}
 
-\subsection{Function targetAssessing()}
+\subsection{Assessing Targets}
 
 The first thing this function does is assure the robot is still before reading
 the differential distance measures. The code could account for the velocity of
@@ -229,6 +229,7 @@ the target, he is in a semi-idle state doing nothing other than to measure
 distances to try to identify a potential target.
 
 \subsection{Issues with the current implementation}
+\label{chap: issues}
 \begin{itemize}
       \item 
       As of right now, the seeker isn't identifying how close the target is. As of
@@ -267,7 +268,7 @@ backwards, as there is never a scenario where the runner wants to be facing the
 seeker, but even then the runner ideally shouldn't be directly in front of the 
 seeker, since it would be in its perception field. 
 
-\section{Experiments}
+\section{Experiments and results}
 
 The following section goes over how the algorithm performed when faced with a
 few tests. It was tested the reaction time and the accuracy of the assessing,
@@ -276,6 +277,7 @@ are demo videos in the Github Repository}
 
 
 \subsection{Reaction time}
+\label{chap:reaction}
 
 It's important to note the following : the reaction time is mainly controlled by
 the delay between differential measures, \textit{$ \Delta T$}. In theory with a really low $ \Delta T$, the
@@ -290,12 +292,33 @@ drawbacks:
 \end{itemize}
 
 Nevertheless, with a delay of \textit{50ms}, here are some measurements of the
-response time with a slow moving object.
+response time with a moving object.
 
 
-\Large{
-INSERT RESULTS HERE}
 
+\begin{table}[h]
+      \caption[short]{Results of the reaction time experiment\footnote[2]{}\footnote[3]{}}
+      \begin{tabular}{l|c|r}
+            \toprule
+            Trial     &     Runner Speed\footnote[4]{}     &     Reaction time[s]\\
+            \midrule    
+            1     &     10     &     0.3\\
+            2     &     20     &     0.4\\
+            3     &     50     &     0.6\\
+            4     &     70     &     0.7\\
+            5     &     100    &     -\\
+            6     &     150    &     -\\
+            7     &     200    &     -\\
+            \bottomrule
+      \end{tabular}
+\end{table}
+
+Each time was measured from the instant that the runner entered the direct line
+of sight of the seeker until the start of its movement.
+      
+\footnotetext[2]{Each trial consisted of 3 measures and the written reaction time is the mean average of the measurements for each speed}
+\footnotetext[3]{The time was measured with by recording at the 60fps on a DLSR camera and then analyzed in Adobe Premiere. Still,this results are merely approximate and meant to be taken as qualitative}
+\footnotetext[4]{This speed is the integer given to the servos of the robot, it's a function prebuilt in the library as the author had no way of accurately measuring the runners speed }
 
 
  
@@ -304,15 +327,59 @@ INSERT RESULTS HERE}
 To test the seeker's accuracy, a series of objects approached the seeker from
 different angles and speeds and here are some results:
 
+\begin{table}[h]
+      \caption[short]{Results of the accuracy experiment}
+      \begin{tabular}{l|c|c|r}
+            \toprule
+            Trial     &     Runner's Speed  & Approach Direction   & \%
+            of accurate response\\
+            \midrule    
+            1         &     10              & Right   &   80\\
+            2         &     10              & Left    &   80\\
+            3         &     20              & Right   &   60\\
+            4         &     20              & Left    &   50\\
+            5         &     70              & Right   &   30\\
+            6         &     70              & Left    &   20\\
+            \bottomrule
+      \end{tabular}
+\end{table}
 
-\Large{
-INSERT RESULTS HERE}
+\subsection{Discussion of results}
 
+From the reaction time experiment, it could be seen that the robot does not
+react to objects that move at speeds faster than 70\footnotemark[4] and does not
+answer accurately neither for objects moving at those speeds. How the other
+hand, for low speeds, the robot's algorithm is working within margin of error.
+
+This would suggest that the solution implemented is not enough for more
+demanding environments, which might very likely be due to the points discussed
+in \autoref{chap: issues}. If those were to be tackled in a future
+implementation of this algorithm, its plausible that the results would be much
+better.
+
+Regardless, the results were enough to proof that the concept of ultrasonic
+sensor fusion for object tracking has some potential. At the current
+implementation it works for low speeds decently\footnotemark[1].
 
 \section{Conclusions}
 
+In conclusion, the purpose of this paper was to assess  whether ultrasonic
+sensor fusion for tracking objects would be viable. The method adopted showed
+some potential and interesting results, however it proved insufficient in its
+current state for fast moving targets. The reaction speed could be increased by
+increasing the delay between measurements but at the cost the accuracy, as
+explained in \autoref{chap:reaction}.\\
 
-% \bibliographystyle{ACM-Reference-Format}
-% \bibliography{references}
+Overall the research was successful at demonstrating a proof of concept and if
+the issues referred in \autoref{chap: issues} are tackled, the algorithm will
+work much better and at a much lower price than a more sophisticated sensor such
+as a RGBD camera or LiDar.
+
+
+
+The final project code is accesible on \textit{\href{https://github.com/brunofavs/propeller_cath_game}{Github}}. 
+
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{references}
 
 \end{document}

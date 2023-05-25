@@ -2,7 +2,7 @@
 %%% Do NOT edit. File created by BibTeX with style
 %%% ACM-Reference-Format-Journals [18-Jan-2012].
 
-\begin{thebibliography}{0}
+\begin{thebibliography}{6}
 
 %%% ====================================================================
 %%% NOTE TO THE USER: you can override these defaults by providing
@@ -36,5 +36,59 @@
 \providecommand\bibinfo[2]{#2}
 \providecommand\natexlab[1]{#1}
 \providecommand\showeprint[2][]{arXiv:#2}
+
+\bibitem[Chang et~al\mbox{.}(2023)]%
+        {r1}
+\bibfield{author}{\bibinfo{person}{Z. Chang}, \bibinfo{person}{H. Wu}, {and} \bibinfo{person}{C. Li}.} \bibinfo{year}{2023}\natexlab{}.
+\newblock \showarticletitle{YOLOv4-tiny-based robust RGB-D SLAM approach with point and surface feature fusion in complex indoor environments}.
+\newblock \bibinfo{journal}{\emph{Journal of Field Robotics}} \bibinfo{volume}{40}, \bibinfo{number}{3} (\bibinfo{year}{2023}), \bibinfo{pages}{521--534}.
+\newblock
+\urldef\tempurl%
+\url{www.scopus.com}
+\showURL{%
+\tempurl}
+
+
+\bibitem[Comport et~al\mbox{.}(2004)]%
+        {control_robot}
+\bibfield{author}{\bibinfo{person}{A.I. Comport}, \bibinfo{person}{E. Marchand}, {and} \bibinfo{person}{F. Chaumette}.} \bibinfo{year}{2004}\natexlab{}.
+\newblock \showarticletitle{Robust model-based tracking for robot vision}. In \bibinfo{booktitle}{\emph{2004 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) (IEEE Cat. No.04CH37566)}}, Vol.~\bibinfo{volume}{1}. \bibinfo{pages}{692--697 vol.1}.
+\newblock
+
+
+\bibitem[Gu and Meng(2023)]%
+        {r2}
+\bibfield{author}{\bibinfo{person}{P. Gu} {and} \bibinfo{person}{Z. Meng}.} \bibinfo{year}{2023}\natexlab{}.
+\newblock \showarticletitle{S-VIO: Exploiting Structural Constraints for RGB-D Visual Inertial Odometry}.
+\newblock \bibinfo{journal}{\emph{IEEE Robotics and Automation Letters}} \bibinfo{volume}{8}, \bibinfo{number}{6} (\bibinfo{year}{2023}), \bibinfo{pages}{3542--3549}.
+\newblock
+\urldef\tempurl%
+\url{www.scopus.com}
+\showURL{%
+\tempurl}
+
+
+\bibitem[Panich(2010)]%
+        {panich2010comparison}
+\bibfield{author}{\bibinfo{person}{Surachai Panich}.} \bibinfo{year}{2010}\natexlab{}.
+\newblock \showarticletitle{Comparison of distance measurement between stereo vision and ultrasonic sensor}.
+\newblock \bibinfo{journal}{\emph{Journal of Computer Science}} \bibinfo{volume}{6}, \bibinfo{number}{10} (\bibinfo{year}{2010}), \bibinfo{pages}{1108}.
+\newblock
+
+
+\bibitem[Yi et~al\mbox{.}(2000)]%
+        {ultrasonic_fusion}
+\bibfield{author}{\bibinfo{person}{Zou Yi}, \bibinfo{person}{Ho~Yeong Khing}, \bibinfo{person}{Chua~Chin Seng}, {and} \bibinfo{person}{Zhou~Xiao Wei}.} \bibinfo{year}{2000}\natexlab{}.
+\newblock \showarticletitle{Multi-ultrasonic sensor fusion for mobile robots}. In \bibinfo{booktitle}{\emph{Proceedings of the IEEE Intelligent Vehicles Symposium 2000 (Cat. No.00TH8511)}}. \bibinfo{pages}{387--391}.
+\newblock
+
+
+\bibitem[Zhmud et~al\mbox{.}(2018)]%
+        {Zhmud_2018}
+\bibfield{author}{\bibinfo{person}{V~A Zhmud}, \bibinfo{person}{N~O Kondratiev}, \bibinfo{person}{K~A Kuznetsov}, \bibinfo{person}{V~G Trubin}, {and} \bibinfo{person}{L~V Dimitrov}.} \bibinfo{year}{2018}\natexlab{}.
+\newblock \showarticletitle{Application of ultrasonic sensor for measuring distances in robotics}.
+\newblock \bibinfo{journal}{\emph{Journal of Physics: Conference Series}}  \bibinfo{volume}{1015} (\bibinfo{date}{may} \bibinfo{year}{2018}).
+\newblock
+
 
 \end{thebibliography}
